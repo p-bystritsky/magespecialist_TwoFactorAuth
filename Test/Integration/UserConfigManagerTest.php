@@ -26,6 +26,8 @@ use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Serialize\SerializerInterface;
 use Magento\TestFramework\Helper\Bootstrap;
+use Magento\User\Model\ResourceModel\User as UserResource;
+use Magento\User\Model\ResourceModel\User\CollectionFactory as AdminUserCollectionFactory;
 use Magento\User\Model\ResourceModel\User\Collection as AdminUserCollection;
 use MSP\TwoFactorAuth\Api\UserConfigManagerInterface;
 use PHPUnit\Framework\TestCase;
@@ -46,12 +48,24 @@ class UserConfigManagerTest extends TestCase
     private $serializer;
 
     /**
+     * @var UserResource
+     */
+    private $userResource;
+
+    /**
+     * @var AdminUserCollectionFactory
+     */
+    private $userCollectionFactory;
+
+    /**
      * @inheritDoc
      */
     protected function setUp()
     {
         $this->userConfigManager = Bootstrap::getObjectManager()->get(UserConfigManagerInterface::class);
         $this->serializer = Bootstrap::getObjectManager()->get(SerializerInterface::class);
+        $this->userResource = Bootstrap::getObjectManager()->get(UserResource::class);
+        $this->userCollectionFactory = Bootstrap::getObjectManager()->get(AdminUserCollectionFactory::class);
     }
 
     /**
@@ -60,7 +74,7 @@ class UserConfigManagerTest extends TestCase
     public function testShouldSetAndGetProviderConfiguration(): void
     {
         /** @var AdminUserCollection $dummyUserCollection */
-        $dummyUserCollection = Bootstrap::getObjectManager()->create(AdminUserCollection::class);
+        $dummyUserCollection = $this->userCollectionFactory->create();
         $dummyUserCollection->addFieldToFilter('username', 'dummy_username');
         $dummyUser = $dummyUserCollection->getFirstItem();
 
@@ -84,7 +98,7 @@ class UserConfigManagerTest extends TestCase
     public function testShouldSetAndGetConfiguredProviders(): void
     {
         /** @var AdminUserCollection $dummyUserCollection */
-        $dummyUserCollection = Bootstrap::getObjectManager()->create(AdminUserCollection::class);
+        $dummyUserCollection = $this->userCollectionFactory->create();
         $dummyUserCollection->addFieldToFilter('username', 'dummy_username');
         $dummyUser = $dummyUserCollection->getFirstItem();
 
@@ -104,7 +118,7 @@ class UserConfigManagerTest extends TestCase
     public function testShouldSetAndGetDefaultProvider(): void
     {
         /** @var AdminUserCollection $dummyUserCollection */
-        $dummyUserCollection = Bootstrap::getObjectManager()->create(AdminUserCollection::class);
+        $dummyUserCollection = $this->userCollectionFactory->create();
         $dummyUserCollection->addFieldToFilter('username', 'dummy_username');
         $dummyUser = $dummyUserCollection->getFirstItem();
 
@@ -124,7 +138,7 @@ class UserConfigManagerTest extends TestCase
     public function testShouldResetProviderConfiguration(): void
     {
         /** @var AdminUserCollection $dummyUserCollection */
-        $dummyUserCollection = Bootstrap::getObjectManager()->create(AdminUserCollection::class);
+        $dummyUserCollection = $this->userCollectionFactory->create();
         $dummyUserCollection->addFieldToFilter('username', 'dummy_username');
         $dummyUser = $dummyUserCollection->getFirstItem();
 
@@ -148,7 +162,7 @@ class UserConfigManagerTest extends TestCase
     public function testShouldActivateProvider(): void
     {
         /** @var AdminUserCollection $dummyUserCollection */
-        $dummyUserCollection = Bootstrap::getObjectManager()->create(AdminUserCollection::class);
+        $dummyUserCollection = $this->userCollectionFactory->create();
         $dummyUserCollection->addFieldToFilter('username', 'dummy_username');
         $dummyUser = $dummyUserCollection->getFirstItem();
 
@@ -177,7 +191,7 @@ class UserConfigManagerTest extends TestCase
     public function testShouldEncryptConfiguration(): void
     {
         /** @var AdminUserCollection $dummyUserCollection */
-        $dummyUserCollection = Bootstrap::getObjectManager()->create(AdminUserCollection::class);
+        $dummyUserCollection = $this->userCollectionFactory->create();
         $dummyUserCollection->addFieldToFilter('username', 'dummy_username');
         $dummyUser = $dummyUserCollection->getFirstItem();
 
@@ -213,7 +227,7 @@ class UserConfigManagerTest extends TestCase
     public function testShouldGetLegacyNonEncryptedProviderConfiguration(): void
     {
         /** @var AdminUserCollection $dummyUserCollection */
-        $dummyUserCollection = Bootstrap::getObjectManager()->create(AdminUserCollection::class);
+        $dummyUserCollection = $this->userCollectionFactory->create();
 
         /** @var ResourceConnection $resourceConnection */
         $resourceConnection = Bootstrap::getObjectManager()->create(ResourceConnection::class);
@@ -252,7 +266,7 @@ class UserConfigManagerTest extends TestCase
     public function testShouldAddProviderConfiguration(): void
     {
         /** @var AdminUserCollection $dummyUserCollection */
-        $dummyUserCollection = Bootstrap::getObjectManager()->create(AdminUserCollection::class);
+        $dummyUserCollection = $this->userCollectionFactory->create();
 
         $dummyUserCollection->addFieldToFilter('username', 'dummy_username');
         $dummyUser = $dummyUserCollection->getFirstItem();
@@ -285,11 +299,12 @@ class UserConfigManagerTest extends TestCase
      */
     protected function tearDown()
     {
-        /** @var ResourceConnection $resourceConnection */
-        $resourceConnection = Bootstrap::getObjectManager()->create(ResourceConnection::class);
-
-        $connection = $resourceConnection->getConnection();
-        $connection->delete('admin_user');
+        /** @var AdminUserCollection $dummyUserCollection */
+        $dummyUserCollection = Bootstrap::getObjectManager()->create(AdminUserCollection::class);
+        $dummyUserCollection->addFieldToFilter('username', ['neq' => 'user']);
+        foreach ($dummyUserCollection->getItems() as $user) {
+            $this->userResource->delete($user);
+        }
 
         parent::tearDown();
     }
