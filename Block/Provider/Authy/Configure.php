@@ -25,6 +25,7 @@ use MSP\TwoFactorAuth\Model\ResourceModel\Country\CollectionFactory as CountryCo
 
 /**
  * @SuppressWarnings(PHPMD.LongVariable)
+ * @api
  */
 class Configure extends Template
 {

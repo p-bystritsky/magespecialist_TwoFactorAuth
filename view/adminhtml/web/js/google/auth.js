@@ -15,8 +15,6 @@
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-'use strict';
-
 define([
     'jquery',
     'ko',
@@ -24,6 +22,8 @@ define([
     'MSP_TwoFactorAuth/js/error',
     'MSP_TwoFactorAuth/js/registry'
 ], function ($, ko, Component, error, registry) {
+    'use strict';
+
     return Component.extend({
         currentStep: ko.observable('register'),
         waitText: ko.observable(''),
@@ -60,7 +60,7 @@ define([
          * @returns {string}
          * @author Konrad Skrzynski <konrad.skrzynski@accenture.com>
          */
-        getSecretCode: function() {
+        getSecretCode: function () {
             return this.secretCode;
         },
 

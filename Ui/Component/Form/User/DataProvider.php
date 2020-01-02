@@ -165,9 +165,9 @@ class DataProvider extends AbstractDataProvider
     {
         $meta = parent::getMeta();
 
-        $meta['base_fieldset']['children']['msp_tfa_providers']['arguments']['data']['config']['forced_providers'] =
+        $meta['base_fieldset']['children']['msp_tfa_providers']['arguments']['data']['config']['forcedProviders'] =
             $this->getForcedProviders();
-        $meta['base_fieldset']['children']['msp_tfa_providers']['arguments']['data']['config']['enabled_providers'] =
+        $meta['base_fieldset']['children']['msp_tfa_providers']['arguments']['data']['config']['enabledProviders'] =
             $this->enabledProvider->toOptionArray();
 
         return $meta;

@@ -24,6 +24,9 @@ use Magento\Backend\Block\Template;
 use Magento\Backend\Model\Auth\Session;
 use MSP\TwoFactorAuth\Model\Provider\Engine\Google;
 
+/**
+ * @api
+ */
 class Configure extends Template
 {
     private $session;

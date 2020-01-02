@@ -22,6 +22,9 @@ namespace MSP\TwoFactorAuth\Block\Provider\Authy;
 
 use Magento\Backend\Block\Template;
 
+/**
+ * @api
+ */
 class Auth extends Template
 {
     public function getJsLayout()

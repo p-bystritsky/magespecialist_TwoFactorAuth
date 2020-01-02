@@ -24,6 +24,9 @@ use Magento\Backend\Block\Template;
 use Magento\Backend\Model\Auth\Session;
 use MSP\TwoFactorAuth\Model\Provider\Engine\DuoSecurity;
 
+/**
+ * @api
+ */
 class Auth extends Template
 {
     /**

@@ -21,6 +21,9 @@ namespace MSP\TwoFactorAuth\Block\Provider\U2fKey;
 use Magento\Backend\Block\Template;
 use MSP\TwoFactorAuth\Model\Provider\Engine\U2fKey;
 
+/**
+ * @api
+ */
 class Configure extends Template
 {
     /**
@@ -33,7 +36,7 @@ class Configure extends Template
         U2fKey $u2fKey,
         array $data = []
     ) {
-    
+
         parent::__construct($context, $data);
         $this->u2fKey = $u2fKey;
     }

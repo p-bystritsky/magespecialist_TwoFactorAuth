@@ -25,7 +25,7 @@
 <script type="text/x-magento-init">
 {
     "#msp-twofactorauth-change-provider-container": {
-        "Magento_Ui/js/core/app": <?php /* @escapeNotVerified */ echo $block->getJsLayout() ?>
+        "Magento_Ui/js/core/app": <?= /* @noEscape */ $block->getJsLayout() ?>
     }
 }
 </script>

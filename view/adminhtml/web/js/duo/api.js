@@ -7,51 +7,50 @@
 // jscs:disable
 
 (function (root, factory) {
-/*eslint-disable */
-if (typeof define === 'function' && define.amd) {
-    // AMD. Register as an anonymous module.
-    define([], factory);
-    /*eslint-enable */
-} else if (typeof module === 'object' && module.exports) {
-    // Node. Does not work with strict CommonJS, but
-    // only CommonJS-like environments that support module.exports,
-    // like Node.
-    module.exports = factory();
-} else {
-    // Browser globals (root is window)
-    var Duo = factory();
-    // If the Javascript was loaded via a script tag, attempt to autoload
-    // the frame.
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define([], factory);
+        /*eslint-enable */
+    } else if (typeof module === 'object' && module.exports) {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        module.exports = factory();
+    } else {
+        // Browser globals (root is window)
+        var Duo = factory();
+        // If the Javascript was loaded via a script tag, attempt to autoload
+        // the frame.
 
-    Duo._onReady(Duo.init);
+        Duo._onReady(Duo.init);
 
-    // Attach Duo to the `window` object
-    root.Duo = Duo;
-}
+        // Attach Duo to the `window` object
+        root.Duo = Duo;
+    }
 }(this, function () {
     var DUO_MESSAGE_FORMAT = /^(?:AUTH|ENROLL)+\|[A-Za-z0-9\+\/=]+\|[A-Za-z0-9\+\/=]+$/;
     var DUO_ERROR_FORMAT = /^ERR\|[\w\s\.\(\)]+$/;
     var DUO_OPEN_WINDOW_FORMAT = /^DUO_OPEN_WINDOW\|/;
     var VALID_OPEN_WINDOW_DOMAINS = [
-      'duo.com',
-      'duosecurity.com',
-      'duomobile.s3-us-west-1.amazonaws.com'
+        'duo.com',
+        'duosecurity.com',
+        'duomobile.s3-us-west-1.amazonaws.com'
     ];
 
     var iframeId = 'duo_iframe',
-      postAction = '',
-      postArgument = 'sig_response',
-      host,
-      sigRequest,
-      duoSig,
-      appSig,
-      iframe,
-      submitCallback;
+        postAction = '',
+        postArgument = 'sig_response',
+        host,
+        sigRequest,
+        duoSig,
+        appSig,
+        iframe,
+        submitCallback;
 
     function throwError(message, url) {
         throw new Error(
-          'Duo Web SDK error: ' + message +
-          (url ? '\n' + 'See ' + url + ' for more information' : '')
+            'Duo Web SDK error: ' + message +
+            (url ? '\n' + 'See ' + url + ' for more information' : '')
         );
     }
 
@@ -122,9 +121,9 @@ if (typeof define === 'function' && define.amd) {
         // validate the token
         if (sig.indexOf(':') === -1 || sig.split(':').length !== 2) {
             throwError(
-              'Duo was given a bad token.  This might indicate a configuration ' +
-              'problem with one of Duo\'s client libraries.',
-              'https://www.duosecurity.com/docs/duoweb#first-steps'
+                'Duo was given a bad token.  This might indicate a configuration ' +
+                'problem with one of Duo\'s client libraries.',
+                'https://www.duosecurity.com/docs/duoweb#first-steps'
             );
         }
 
@@ -151,11 +150,11 @@ if (typeof define === 'function' && define.amd) {
 
         if (!iframe) {
             throw new Error(
-              'This page does not contain an iframe for Duo to use.' +
-              'Add an element like <iframe id="duo_iframe"></iframe> ' +
-              'to this page.  ' +
-              'See https://www.duosecurity.com/docs/duoweb#3.-show-the-iframe ' +
-              'for more information.'
+                'This page does not contain an iframe for Duo to use.' +
+                'Add an element like <iframe id="duo_iframe"></iframe> ' +
+                'to this page.  ' +
+                'See https://www.duosecurity.com/docs/duoweb#3.-show-the-iframe ' +
+                'for more information.'
             );
         }
 
@@ -178,13 +177,13 @@ if (typeof define === 'function' && define.amd) {
      */
     function isDuoMessage(event) {
         return Boolean(
-          event.origin === 'https://' + host &&
-          typeof event.data === 'string' &&
-          (
-            event.data.match(DUO_MESSAGE_FORMAT) ||
-            event.data.match(DUO_ERROR_FORMAT) ||
-            event.data.match(DUO_OPEN_WINDOW_FORMAT)
-          )
+            event.origin === 'https://' + host &&
+            typeof event.data === 'string' &&
+            (
+                event.data.match(DUO_MESSAGE_FORMAT) ||
+                event.data.match(DUO_ERROR_FORMAT) ||
+                event.data.match(DUO_OPEN_WINDOW_FORMAT)
+            )
         );
     }
 
@@ -200,12 +199,12 @@ if (typeof define === 'function' && define.amd) {
      * Example using options hash:
      * ```javascript
      * Duo.init({
-       *     iframe: "some_other_id",
-       *     host: "api-main.duo.test",
-       *     sig_request: "...",
-       *     post_action: "/auth",
-       *     post_argument: "resp"
-       * });
+     *     iframe: "some_other_id",
+     *     host: "api-main.duo.test",
+     *     sig_request: "...",
+     *     post_action: "/auth",
+     *     post_argument: "resp"
+     * });
      * ```
      *
      * Example using `data-` attributes:
@@ -330,7 +329,7 @@ if (typeof define === 'function' && define.amd) {
 
         for (var i = 0; i < VALID_OPEN_WINDOW_DOMAINS.length; i++) {
             if (parser.hostname.endsWith('.' + VALID_OPEN_WINDOW_DOMAINS[i]) ||
-              parser.hostname === VALID_OPEN_WINDOW_DOMAINS[i]) {
+                parser.hostname === VALID_OPEN_WINDOW_DOMAINS[i]) {
                 return true;
             }
         }
@@ -347,10 +346,10 @@ if (typeof define === 'function' && define.amd) {
 
             if (!host) {
                 throwError(
-                  'No API hostname is given for Duo to use.  Be sure to pass ' +
-                  'a `host` parameter to Duo.init, or through the `data-host` ' +
-                  'attribute on the iframe element.',
-                  'https://www.duosecurity.com/docs/duoweb#3.-show-the-iframe'
+                    'No API hostname is given for Duo to use.  Be sure to pass ' +
+                    'a `host` parameter to Duo.init, or through the `data-host` ' +
+                    'attribute on the iframe element.',
+                    'https://www.duosecurity.com/docs/duoweb#3.-show-the-iframe'
                 );
             }
         }
@@ -360,10 +359,10 @@ if (typeof define === 'function' && define.amd) {
 
             if (!duoSig || !appSig) {
                 throwError(
-                  'No valid signed request is given.  Be sure to give the ' +
-                  '`sig_request` parameter to Duo.init, or use the ' +
-                  '`data-sig-request` attribute on the iframe element.',
-                  'https://www.duosecurity.com/docs/duoweb#3.-show-the-iframe'
+                    'No valid signed request is given.  Be sure to give the ' +
+                    '`sig_request` parameter to Duo.init, or use the ' +
+                    '`data-sig-request` attribute on the iframe element.',
+                    'https://www.duosecurity.com/docs/duoweb#3.-show-the-iframe'
                 );
             }
         }
@@ -380,9 +379,9 @@ if (typeof define === 'function' && define.amd) {
 
         // point the iframe at Duo
         iframe.src = [
-          'https://', host, '/frame/web/v1/auth?tx=', duoSig,
-          '&parent=', encodeURIComponent(document.location.href),
-          '&v=2.6'
+            'https://', host, '/frame/web/v1/auth?tx=', duoSig,
+            '&parent=', encodeURIComponent(document.location.href),
+            '&v=2.6'
         ].join('');
 
         // listen for the 'message' event

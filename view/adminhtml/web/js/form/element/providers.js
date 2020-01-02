@@ -15,16 +15,16 @@
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-'use strict';
-
 define(['Magento_Ui/js/form/element/abstract'], function (Abstract) {
+    'use strict';
+
     return Abstract.extend({
         /**
          * Get a list of forced providers
          * @returns {Array}
          */
         getForcedProviders: function () {
-            return this.forced_providers;
+            return this.forcedProviders;
         },
 
         /**
@@ -32,7 +32,7 @@ define(['Magento_Ui/js/form/element/abstract'], function (Abstract) {
          * @returns {Array}
          */
         getEnabledProviders: function () {
-            return this.enabled_providers;
+            return this.enabledProviders;
         },
 
         /**

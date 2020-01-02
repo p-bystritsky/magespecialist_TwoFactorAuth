@@ -44,7 +44,8 @@ class EncryptConfiguration
     }
 
     /**
-     * Encrypt existing users configuration
+     * Encrypt existing users configuration.
+     *
      * @param ModuleDataSetupInterface $moduleDataSetup
      */
     public function execute(ModuleDataSetupInterface $moduleDataSetup): void

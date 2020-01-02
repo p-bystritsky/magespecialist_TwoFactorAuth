@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="msp_tfa_country_codes" resource="default" engine="innodb" comment="TFA Country Codes">
+        <column xsi:type="int" name="msp_tfa_country_codes_id" padding="10" unsigned="true" nullable="false"
+                identity="true" comment="TFA Admin User ID"/>
+        <column xsi:type="varchar" name="code" nullable="false" length="2" comment="Code"/>
+        <column xsi:type="text" name="name" nullable="false" comment="Country Name"/>
+        <column xsi:type="text" name="dial_code" nullable="false" comment="Prefix"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="msp_tfa_country_codes_id"/>
+        </constraint>
+        <index referenceId="MSP_TFA_COUNTRY_CODES_CODE" indexType="btree">
+            <column name="code"/>
+        </index>
+    </table>
+    <table name="msp_tfa_trusted" resource="default" engine="innodb" comment="TFA Trusted Devices">
+        <column xsi:type="int" name="msp_tfa_trusted_id" padding="10" unsigned="true" nullable="false"
+                identity="true" comment="Trusted Device ID"/>
+        <column xsi:type="datetime" name="date_time" nullable="false" comment="Date and Time"/>
+        <column xsi:type="int" name="user_id" padding="10" unsigned="true" nullable="false" comment="User ID"/>
+        <column xsi:type="text" name="device_name" nullable="false" comment="Device Name"/>
+        <column xsi:type="text" name="token" nullable="false" comment="Token"/>
+        <column xsi:type="text" name="last_ip" nullable="false" comment="Last IP"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="msp_tfa_trusted_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="MSP_TFA_TRUSTED_USER_ID_ADMIN_USER_USER_ID"
+                    table="msp_tfa_trusted" column="user_id"
+                    referenceTable="admin_user" referenceColumn="user_id"
+                    onDelete="CASCADE"/>
+    </table>
+    <table name="msp_tfa_user_config" resource="default" engine="innodb" comment="TFA User Config">
+        <column xsi:type="int" name="msp_tfa_user_config_id" padding="10" unsigned="true" nullable="false"
+                identity="true" comment="TFA Admin User ID"/>
+        <column xsi:type="int" name="user_id" padding="10" unsigned="true" nullable="false" comment="User ID"/>
+        <column xsi:type="text" name="encoded_providers" nullable="true" comment="Encoded Providers List"/>
+        <column xsi:type="text" name="encoded_config" nullable="true" comment="Encoded Providers Configuration"/>
+        <column xsi:type="text" name="default_provider" nullable="true" comment="Default Provider"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="msp_tfa_user_config_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="MSP_TFA_USER_CONFIG_USER_ID_ADMIN_USER_USER_ID"
+                    table="msp_tfa_user_config" column="user_id"
+                    referenceTable="admin_user" referenceColumn="user_id"
+                    onDelete="CASCADE"/>
+    </table>
+</schema>

@@ -69,7 +69,7 @@
         </arguments>
     </type>
 
-    <type name="Magento\Framework\Console\CommandList">
+    <type name="Magento\Framework\Console\CommandListInterface">
         <arguments>
             <argument name="commands" xsi:type="array">
                 <item name="msp_twofactorauth_disable" xsi:type="object">MSP\TwoFactorAuth\Command\TfaDisable</item>

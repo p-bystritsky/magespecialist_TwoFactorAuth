@@ -27,6 +27,9 @@ use Magento\User\Model\User;
 use MSP\TwoFactorAuth\Api\TfaInterface;
 use MSP\TwoFactorAuth\Api\ProviderInterface;
 
+/**
+ * @api
+ */
 class ChangeProvider extends Template
 {
     /**
